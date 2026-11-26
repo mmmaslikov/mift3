@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<!--
+  ══════════════════════════════════════════════════════════════════
+  🧠 ЗАДАЧА ДНЯ · Межпредметная неделя «От данных к решению»
+  📅 30 ноября — 5 декабря 2026 · Точка будущего
+  ══════════════════════════════════════════════════════════════════
+
+  ✅ ПРАВИЛЬНЫЕ ОТВЕТЫ (до пятницы на экране НЕ показываются):
+     День 1 · Пн 30.11 · 🐌 Улитка-альпинист ......... 8  (дней)
+        (за 7 суток улитка на 7 м; на 8-й день +3 м → вершина)
+     День 2 · Вт 01.12 · ⚖️ Фальшивая монета ......... 2  (взвешивания)
+        (9 монет → 3+3+3: первое взвешивание оставляет 3 подозрительные,
+         второе находит одну; у весов три исхода, а не два)
+     День 3 · Ср 02.12 · 🍎 Коробки-обманки .......... 1  (фрукт)
+        (достать фрукт из коробки с табличкой «Смесь»: она не смесь,
+         значит чистая; остальные две восстанавливаются по неверным табличкам)
+     День 4 · Чт 03.12 · 🪜 Коварная лестница ........ 90 (ступенек)
+        (1→3 этаж = 2 пролёта по 18; 1→6 этаж = 5 пролётов = 90)
+     (ответы автоматически видны только на 5-й вкладке «Итоги»)
+
+  🖼 ФАЙЛЫ КАРТИНОК — положить в папку images/ рядом с этим файлом:
+     images/logo.png — логотип «Точка будущего» (PNG на прозрачном фоне, ~400×400)
+     images/qr1.png  — QR-код на Яндекс Форму ПОНЕДЕЛЬНИКА (квадрат, ~600×600)
+     images/qr2.png  — QR-код на Яндекс Форму ВТОРНИКА
+     images/qr3.png  — QR-код на Яндекс Форму СРЕДЫ
+     images/qr4.png  — QR-код на Яндекс Форму ЧЕТВЕРГА
+     Пока файлов нет — на их месте показываются аккуратные заглушки.
+
+  📊 КАК ОБНОВЛЯТЬ СТАТИСТИКУ КАЖДЫЙ ВЕЧЕР:
+     В самом низу файла найди блок  const WEEK_DATA = {...}
+     и замени null на реальные числа/строки из таблиц:
+       days[0..3]  — итоги пн/вт/ср/чт (total, correct, topGroup = КЛАСС)
+       final       — итоги всей недели (topGroup = КЛАСС)
+       top3        — три призёра: name, group (класс ИЛИ должность), score (0–4)
+     null = на экране остаётся заглушка «—».
+
+  🗓 ВКЛАДКИ: при открытии и обновлении страницы автоматически
+     открывается вкладка текущего дня (30.11–04.12). Если страница
+     остаётся открытой на экране атриума — в полночь вкладка сама
+     переключится на следующий день. Вручную листать тоже можно:
+     вкладки, стрелки ← →, клавиши 1–5. Кнопка ⛶ (или F) — полный экран.
+  ══════════════════════════════════════════════════════════════════
+-->
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧠 Задача дня · «От данных к решению» · Точка будущего</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<style>
+/* ─────────── Шрифты (fontsource CDN, кириллица + латиница) ─────────── */
+@font-face{font-family:'Manrope';font-style:normal;font-weight:400;font-display:swap;src:url('https://cdn.jsdelivr.net/fontsource/fonts/manrope@latest/cyrillic-400-normal.woff2') format('woff2');unicode-range:U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:400;font-display:swap;src:url('https://cdn.jsdelivr.net/fontsource/fonts/manrope@latest/latin-400-normal.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:600;font-display:swap;src:url('https://cdn.jsdelivr.net/fontsource/fonts/manrope@latest/cyrillic-600-normal.woff2') format('woff2');unicode-range:U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:600;font-display:swap;src:url('https://cdn.jsdelivr.net/fontsource/fonts/manrope@latest/latin-600-normal.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:700;font-display:swap;src:url('https://cdn.jsdelivr.net/fontsource/fonts/manrope@latest/cyrillic-700-normal.woff2') format('woff2');unicode-range:U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:700;font-display:swap;src:url('https://cdn.jsdelivr.net/fontsource/fonts/manrope@latest/latin-700-normal.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:800;font-display:swap;src:url('https://cdn.jsdelivr.net/fontsource/fonts/manrope@latest/cyrillic-800-normal.woff2') format('woff2');unicode-range:U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:800;font-display:swap;src:url('https://cdn.jsdelivr.net/fontsource/fonts/manrope@latest/latin-800-normal.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Unbounded';font-style:normal;font-weight:600;font-display:swap;src:url('https://cdn.jsdelivr.net/fontsource/fonts/unbounded@latest/cyrillic-600-normal.woff2') format('woff2');unicode-range:U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;}
+@font-face{font-family:'Unbounded';font-style:normal;font-weight:600;font-display:swap;src:url('https://cdn.jsdelivr.net/fontsource/fonts/unbounded@latest/latin-600-normal.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Unbounded';font-style:normal;font-weight:800;font-display:swap;src:url('https://cdn.jsdelivr.net/fontsource/fonts/unbounded@latest/cyrillic-800-normal.woff2') format('woff2');unicode-range:U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;}
+@font-face{font-family:'Unbounded';font-style:normal;font-weight:800;font-display:swap;src:url('https://cdn.jsdelivr.net/fontsource/fonts/unbounded@latest/latin-800-normal.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+
+/* ─────────── Палитра «Точки будущего»: бирюза → зелень ─────────── */
+:root{
+  --cyan:#25B5E2;
+  --cyan-soft:#8FDDF4;
+  --cyan-mist:#E3F6FC;
+  --teal:#0E7FA6;
+  --deep:#0A3D4F;
+  --green:#54C77F;
+  --green-deep:#2FA36B;
+  --mint:#E9F9F0;
+  --lime:#B9E45C;
+  --gold:#F6B93B;
+  --gold-soft:#FFF3D9;
+  --coral:#FF6F61;
+  --ink:#2E3A45;
+  --slate:#5B6B78;
+  --paper:#F4FBFD;
+  --card:#FFFFFF;
+  --line:#D9EDF4;
+  --grad-brand:linear-gradient(100deg,#0E7FA6 0%,#25B5E2 48%,#54C77F 100%);
+  --grad-num:linear-gradient(120deg,#0E7FA6,#25B5E2 55%,#2FA36B);
+  --font-body:'Manrope','Segoe UI',system-ui,'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif;
+  --font-disp:'Unbounded','Manrope','Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:var(--font-body);color:var(--ink);
+  background:
+    radial-gradient(900px 600px at 8% -10%,rgba(37,181,226,.28),transparent 60%),
+    radial-gradient(1000px 700px at 105% 110%,rgba(84,199,127,.25),transparent 60%),
+    linear-gradient(160deg,#06222B 0%,#0A3540 55%,#0C4A45 100%);
+}
+::-webkit-scrollbar{width:10px;height:10px;}
+::-webkit-scrollbar-track{background:var(--cyan-mist);}
+::-webkit-scrollbar-thumb{background:var(--grad-brand);border-radius:8px;}
+button{font-family:inherit;cursor:pointer;}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+
+/* ─────────── Сцена 1920×1080, масштабируется под любой экран ─────────── */
+#stage{
+  position:fixed;left:50%;top:50%;width:1920px;height:1080px;
+  transform:translate(-50%,-50%);transform-origin:center center;
+  background:var(--paper);border-radius:26px;overflow:hidden;
+  box-shadow:0 50px 140px rgba(0,10,15,.55),0 0 0 1px rgba(143,221,244,.25);
+  display:flex;flex-direction:column;
+}
+.stage-bg{position:absolute;inset:0;pointer-events:none;z-index:0;}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;}
+.blob-a{width:760px;height:760px;left:-220px;top:-260px;background:radial-gradient(circle,rgba(37,181,226,.5),transparent 65%);animation:blobFloat 22s ease-in-out infinite alternate;}
+.blob-b{width:820px;height:820px;right:-260px;bottom:-300px;background:radial-gradient(circle,rgba(84,199,127,.45),transparent 65%);animation:blobFloat 26s ease-in-out infinite alternate-reverse;}
+.blob-c{width:420px;height:420px;right:520px;top:-160px;background:radial-gradient(circle,rgba(185,228,92,.35),transparent 65%);animation:blobFloat 30s ease-in-out infinite alternate;}
+@keyframes blobFloat{from{transform:translate(0,0) scale(1);}to{transform:translate(70px,50px) scale(1.12);}}
+.plexus{position:absolute;opacity:.16;animation:plexusDrift 28s ease-in-out infinite alternate;}
+.plexus-right{right:-60px;top:130px;width:900px;height:720px;}
+.plexus-left{left:-80px;bottom:-60px;width:640px;height:480px;opacity:.12;animation-duration:34s;}
+@keyframes plexusDrift{from{transform:translate(0,0);}to{transform:translate(-34px,22px);}}
+.grain{position:absolute;inset:0;opacity:.05;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");}
+
+/* ─────────── Шапка ─────────── */
+header{
+  position:relative;z-index:3;height:118px;flex:0 0 118px;
+  background:var(--grad-brand);color:#fff;
+  display:flex;align-items:center;gap:26px;padding:0 40px;
+}
+header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;
+  background:linear-gradient(90deg,var(--lime),var(--gold),var(--coral),var(--cyan-soft));opacity:.9;}
+.logo-slot{width:86px;height:86px;flex:0 0 86px;background:#fff;border-radius:22px;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(4,40,52,.28);overflow:hidden;}
+.img-slot{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+.img-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .4s;}
+.img-slot.loaded img{opacity:1;}
+.img-slot.loaded .img-fallback{display:none;}
+.logo-slot .img-slot img{padding:8px;}
+.logo-ph{width:70px;height:70px;border:2px dashed var(--cyan-soft);border-radius:14px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--teal);}
+.logo-ph svg{width:22px;height:22px;stroke:var(--teal);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.logo-ph span{font-size:11px;font-weight:800;letter-spacing:.02em;}
+.head-titles{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.eyebrow{font-size:15px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.85);}
+.head-titles h1{font-family:var(--font-disp);font-weight:800;font-size:31px;line-height:1.15;white-space:nowrap;}
+.head-sub{font-size:19px;font-weight:700;color:rgba(255,255,255,.94);}
+.head-right{margin-left:auto;display:flex;align-items:center;gap:18px;}
+.clock{text-align:right;line-height:1.05;}
+#clockTime{font-family:var(--font-disp);font-weight:800;font-size:40px;letter-spacing:.02em;}
+#clockTime .colon{animation:blink 1s steps(1) infinite;}
+@keyframes blink{50%{opacity:.25;}}
+#clockDate{font-size:16px;font-weight:700;color:rgba(255,255,255,.85);margin-top:3px;}
+.head-btns{display:flex;gap:10px;}
+.icon-btn{width:52px;height:52px;border-radius:16px;border:2px solid rgba(255,255,255,.45);
+  background:rgba(255,255,255,.14);color:#fff;display:flex;align-items:center;justify-content:center;
+  transition:transform .18s,background .18s,border-color .18s;}
+.icon-btn:hover{background:rgba(255,255,255,.3);border-color:#fff;transform:translateY(-3px);}
+.icon-btn:active{transform:translateY(0) scale(.94);}
+.icon-btn svg{width:24px;height:24px;stroke:#fff;stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ─────────── Вкладки-дни ─────────── */
+.tabs{position:relative;z-index:3;flex:0 0 84px;display:flex;gap:12px;padding:12px 40px;background:#EAF6FA;border-bottom:1px solid var(--line);}
+.tab-btn{flex:1;border:2px solid transparent;border-radius:18px;background:#fff;color:var(--slate);
+  display:flex;align-items:center;justify-content:center;gap:14px;padding:8px 10px;
+  box-shadow:0 3px 10px rgba(14,127,166,.08);transition:transform .18s,box-shadow .18s,background .25s,color .25s;position:relative;}
+.tab-btn:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(14,127,166,.18);border-color:var(--cyan-soft);}
+.tab-btn .t-emoji{font-size:30px;line-height:1;}
+.tab-btn .t-col{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15;}
+.tab-btn .t-day{font-family:var(--font-disp);font-weight:600;font-size:19px;}
+.tab-btn .t-date{font-size:14px;font-weight:700;opacity:.75;}
+.tab-btn.active{background:var(--grad-brand);color:#fff;box-shadow:0 12px 26px rgba(14,127,166,.35);transform:translateY(-2px);}
+.tab-btn.active .t-date{opacity:.9;}
+.tab-btn.today::after{content:"";position:absolute;top:9px;right:11px;width:11px;height:11px;border-radius:50%;
+  background:var(--lime);box-shadow:0 0 0 0 rgba(185,228,92,.7);animation:todayPulse 1.8s infinite;}
+@keyframes todayPulse{70%{box-shadow:0 0 0 9px rgba(185,228,92,0);}100%{box-shadow:0 0 0 0 rgba(185,228,92,0);}}
+
+/* ─────────── Контент-слайды ─────────── */
+main{position:relative;z-index:2;flex:1;min-height:0;padding:22px 40px;}
+.slide{display:none;height:100%;grid-template-columns:1fr 560px;gap:26px;}
+.slide.active{display:grid;}
+.slide.active .rise{animation:rise .6s cubic-bezier(.2,.75,.25,1) both;animation-delay:var(--d,0s);}
+@keyframes rise{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:translateY(0);}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:0 22px 50px rgba(14,127,166,.12);position:relative;overflow:hidden;}
+
+/* Карточка задачи */
+.q-card{padding:30px 38px 26px;display:flex;flex-direction:column;}
+.q-card::before{content:"";position:absolute;top:0;left:0;right:0;height:7px;background:var(--grad-brand);}
+.q-ghost{position:absolute;right:14px;bottom:-38px;font-family:var(--font-disp);font-weight:800;font-size:240px;line-height:1;
+  color:transparent;-webkit-text-stroke:2px rgba(37,181,226,.16);pointer-events:none;z-index:0;letter-spacing:-.04em;}
+.q-chips,.q-title,.q-text,.q-hint,.q-foot{position:relative;z-index:1;}
+.q-chips{display:flex;gap:12px;flex-wrap:wrap;}
+.chip{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:8px 18px;font-size:19px;font-weight:800;}
+.chip-day{background:var(--cyan-mist);color:var(--teal);}
+.chip-logic{background:var(--mint);color:var(--green-deep);}
+.chip-try{background:var(--gold-soft);color:#B7791F;}
+.q-title{font-family:var(--font-disp);font-weight:800;font-size:42px;margin:20px 0 6px;color:var(--deep);}
+.q-text{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;font-size:37px;font-weight:700;line-height:1.42;color:#24313C;padding:8px 0;}
+.q-text .q-ask{color:var(--teal);font-weight:800;}
+.num{font-style:normal;font-weight:800;background:var(--grad-num);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.q-hint{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;font-size:22px;font-weight:800;color:var(--green-deep);
+  background:var(--mint);border:2px dashed var(--green);border-radius:14px;padding:9px 20px;margin-bottom:16px;}
+.q-foot{background:linear-gradient(100deg,var(--cyan-mist),var(--mint));border-radius:16px;padding:14px 22px;font-size:21px;font-weight:700;color:var(--deep);}
+.q-foot b{color:var(--teal);}
+
+/* Правая колонка */
+.side-col{display:grid;grid-template-rows:452px 1fr;gap:22px;min-height:0;}
+.qr-card{border:3px solid transparent;border-radius:26px;
+  background:linear-gradient(#fff,#fff) padding-box,var(--grad-brand) border-box;
+  box-shadow:0 22px 50px rgba(14,127,166,.16);padding:20px 26px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.qr-card h3{font-family:var(--font-disp);font-weight:600;font-size:25px;color:var(--deep);margin-bottom:12px;}
+.qr-frame{width:288px;height:288px;border-radius:20px;background:#fff;border:1px solid var(--line);
+  box-shadow:inset 0 0 0 6px var(--cyan-mist),0 10px 26px rgba(14,127,166,.14);position:relative;overflow:hidden;flex:0 0 288px;}
+.qr-frame::after{content:"";position:absolute;left:8%;right:8%;height:56px;top:-60px;border-radius:50%;
+  background:linear-gradient(180deg,transparent,rgba(37,181,226,.35),transparent);animation:scan 3.4s ease-in-out infinite;}
+@keyframes scan{0%{top:-60px;}55%{top:100%;}100%{top:100%;}}
+.qr-frame .img-slot img{padding:10px;}
+.qr-fallback{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  border:3px dashed var(--cyan-soft);border-radius:16px;margin:0;color:var(--teal);}
+.qr-fallback svg{width:86px;height:86px;}
+.qr-fallback .fb-title{font-size:19px;font-weight:800;}
+.qr-fallback .fb-file{font-size:15px;font-weight:700;background:var(--cyan-mist);border-radius:8px;padding:4px 12px;color:var(--teal);}
+.qr-caption{margin-top:12px;font-size:22px;font-weight:800;color:var(--ink);}
+.qr-sub{font-size:16px;font-weight:600;color:var(--slate);margin-top:2px;}
+
+/* Тёмная карточка статистики */
+.stats-card{background:linear-gradient(135deg,#0A3D4F 0%,#0E7FA6 70%,#1490B4 100%);border:none;color:#fff;
+  border-radius:26px;padding:20px 28px;display:flex;flex-direction:column;box-shadow:0 22px 50px rgba(10,61,79,.35);position:relative;overflow:hidden;}
+.stats-deco{position:absolute;right:-12px;bottom:-16px;width:190px;height:150px;opacity:.16;pointer-events:none;z-index:0;}
+.stats-card h3,.stats-card .stat-row,.stats-card .stats-note{position:relative;z-index:1;}
+.stats-card h3{font-family:var(--font-disp);font-weight:600;font-size:22px;margin-bottom:8px;color:#fff;}
+.stat-row{flex:1;display:flex;align-items:center;justify-content:space-between;gap:14px;border-top:1px solid rgba(255,255,255,.18);padding:6px 0;}
+.stat-row:first-of-type{border-top:none;}
+.stat-label{font-size:20px;font-weight:700;color:rgba(255,255,255,.9);}
+.stat-value{font-family:var(--font-disp);font-weight:800;font-size:42px;line-height:1;}
+.stat-value.small{font-size:29px;}
+.pending{color:rgba(255,255,255,.45);}
+.stats-note{font-size:14px;font-weight:700;color:rgba(255,255,255,.65);margin-top:6px;}
+
+/* Карточка «как участвовать» (понедельник) */
+.how-card{padding:20px 28px;display:flex;flex-direction:column;}
+.how-card h3{font-family:var(--font-disp);font-weight:600;font-size:22px;color:var(--deep);margin-bottom:10px;}
+.how-step{flex:1;display:flex;align-items:center;gap:16px;border-top:1px solid var(--line);padding:6px 0;font-size:20px;font-weight:700;color:var(--ink);}
+.how-step:first-of-type{border-top:none;}
+.how-num{width:44px;height:44px;flex:0 0 44px;border-radius:14px;background:var(--grad-brand);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-family:var(--font-disp);font-weight:800;font-size:20px;box-shadow:0 6px 14px rgba(14,127,166,.3);}
+
+/* ─────────── Пятница: итоги ─────────── */
+#slide-5{grid-template-columns:1.06fr .94fr;position:relative;}
+.confetti{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.confetti i{position:absolute;display:block;opacity:.38;animation:confDrift 16s ease-in-out infinite alternate;}
+@keyframes confDrift{from{transform:translateY(0) rotate(-10deg);}to{transform:translateY(-52px) rotate(22deg);}}
+.final-left,.final-right{position:relative;z-index:1;min-height:0;}
+.podium-card{height:100%;padding:26px 34px 24px;display:flex;flex-direction:column;}
+.podium-card::before{content:"";position:absolute;top:0;left:0;right:0;height:7px;background:linear-gradient(90deg,var(--gold),var(--coral),var(--cyan),var(--green));}
+.podium-card h2{font-family:var(--font-disp);font-weight:800;font-size:33px;color:var(--deep);}
+.podium-sub{font-size:18px;font-weight:700;color:var(--slate);margin-top:4px;}
+.podium{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:26px;padding:16px 0 4px;min-height:0;}
+.pod{width:236px;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.pod .medal{font-size:56px;line-height:1;filter:drop-shadow(0 6px 12px rgba(10,61,79,.25));animation:medalBob 3.2s ease-in-out infinite;}
+.pod-1 .medal{animation-delay:.2s;}
+.pod-3 .medal{animation-delay:.5s;}
+@keyframes medalBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.pod-bar{width:100%;border-radius:22px 22px 12px 12px;color:#fff;display:flex;flex-direction:column;align-items:center;
+  padding:20px 16px 14px;position:relative;overflow:hidden;box-shadow:0 18px 38px rgba(10,61,79,.28);}
+.pod-1 .pod-bar{height:480px;background:linear-gradient(165deg,#25B5E2,#0E7FA6 55%,#2FA36B);}
+.pod-2 .pod-bar{height:392px;background:linear-gradient(165deg,#4FC3E8,#1B93BC);}
+.pod-3 .pod-bar{height:330px;background:linear-gradient(165deg,#63CE8C,#2FA36B);}
+.pod-bar::after{content:attr(data-rank);position:absolute;bottom:-26px;right:6px;font-family:var(--font-disp);font-weight:800;font-size:120px;color:rgba(255,255,255,.16);line-height:1;}
+.p-name{font-family:var(--font-disp);font-weight:600;font-size:24px;text-align:center;line-height:1.25;min-height:60px;display:flex;align-items:center;}
+.p-name.pending{color:rgba(255,255,255,.6);border-bottom:3px dashed rgba(255,255,255,.4);}
+.p-group{font-size:18px;font-weight:700;color:rgba(255,255,255,.9);text-align:center;}
+.p-score{margin-top:auto;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.4);border-radius:999px;
+  padding:7px 18px;font-family:var(--font-disp);font-weight:800;font-size:22px;position:relative;z-index:1;}
+.final-right{display:flex;flex-direction:column;gap:22px;}
+.nums-card{flex:1;padding:20px 30px;display:flex;flex-direction:column;justify-content:center;}
+.nums-card h3,.answers-card h3{font-family:var(--font-disp);font-weight:600;font-size:23px;color:var(--deep);margin-bottom:12px;}
+.nums-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.num-cell{background:linear-gradient(160deg,var(--cyan-mist),var(--mint));border-radius:18px;padding:14px 10px;text-align:center;}
+.num-cell .n-val{font-family:var(--font-disp);font-weight:800;font-size:46px;background:var(--grad-num);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.1;}
+.num-cell .n-val.pending{background:none;color:#9DB4BE;}
+.num-cell .n-lab{font-size:16px;font-weight:800;color:var(--slate);margin-top:4px;}
+.active-card{flex:0 0 auto;padding:16px 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  background:linear-gradient(100deg,#FFF6E3,#FFEFD9);border-color:#F3DCA8;}
+.active-card .a-lab{font-size:20px;font-weight:800;color:#8A6116;}
+.active-card .a-val{font-family:var(--font-disp);font-weight:800;font-size:30px;color:#B7791F;}
+.active-card .a-val.pending{color:#CBB27E;}
+.answers-card{flex:1.25;padding:20px 30px;display:flex;flex-direction:column;justify-content:center;}
+.ans-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0;border-top:1px solid var(--line);font-size:21px;font-weight:700;}
+.ans-row:first-of-type{border-top:none;}
+.ans-row .a-name{color:var(--ink);}
+.ans-row .a-key{font-family:var(--font-disp);font-weight:800;font-size:24px;color:var(--green-deep);
+  background:var(--mint);border-radius:12px;padding:6px 16px;white-space:nowrap;}
+
+/* ─────────── Нижняя строка ─────────── */
+.stage-foot{position:relative;z-index:3;flex:0 0 44px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;font-size:16px;font-weight:700;color:var(--slate);background:#EAF6FA;border-top:1px solid var(--line);}
+.stage-foot .f-right{display:flex;align-items:center;gap:14px;}
+#pageInd{font-family:var(--font-disp);font-weight:800;color:var(--teal);background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 14px;font-size:15px;}
+kbd{background:#fff;border:1px solid var(--line);border-bottom-width:3px;border-radius:7px;padding:1px 8px;font-family:var(--font-body);font-weight:800;color:var(--teal);}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s !important;animation-iteration-count:1 !important;transition-duration:.001s !important;}
+}
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <!-- живой фон -->
+  <div class="stage-bg" aria-hidden="true">
+    <div class="blob blob-a"></div><div class="blob blob-b"></div><div class="blob blob-c"></div>
+    <svg class="plexus plexus-right" viewBox="0 0 900 720" fill="none">
+      <g stroke="#25B5E2" stroke-width="1.6">
+        <path d="M60 640 L240 560 L420 620 L610 500 L780 560 L860 120"/>
+        <path d="M240 560 L330 430 L520 470 L610 500 M330 430 L420 620 M520 470 L700 300 L860 120 M700 300 L780 560 M60 640 L180 470 L330 430 M180 470 L240 560 M520 470 L700 300 M420 620 L520 470"/>
+      </g>
+      <g fill="#25B5E2">
+        <circle cx="60" cy="640" r="5"/><circle cx="240" cy="560" r="5"/><circle cx="420" cy="620" r="5"/><circle cx="610" cy="500" r="5"/><circle cx="780" cy="560" r="5"/><circle cx="860" cy="120" r="7"/><circle cx="330" cy="430" r="5"/><circle cx="520" cy="470" r="5"/><circle cx="700" cy="300" r="5"/><circle cx="180" cy="470" r="5"/>
+      </g>
+      <g fill="#54C77F" opacity=".55">
+        <path d="M240 560 L330 430 L180 470 Z"/><path d="M520 470 L610 500 L420 620 Z"/><path d="M700 300 L780 560 L610 500 Z"/>
+      </g>
+    </svg>
+    <svg class="plexus plexus-left" viewBox="0 0 640 480" fill="none">
+      <g stroke="#54C77F" stroke-width="1.6">
+        <path d="M40 420 L170 330 L320 400 L470 300 L600 360 M170 330 L260 210 L470 300 M260 210 L320 400 M40 420 L120 250 L260 210"/>
+      </g>
+      <g fill="#54C77F"><circle cx="40" cy="420" r="5"/><circle cx="170" cy="330" r="5"/><circle cx="320" cy="400" r="5"/><circle cx="470" cy="300" r="5"/><circle cx="600" cy="360" r="5"/><circle cx="260" cy="210" r="5"/><circle cx="120" cy="250" r="5"/></g>
+    </svg>
+    <div class="grain"></div>
+  </div>
+
+  <!-- шапка -->
+  <header>
+    <div class="logo-slot">
+      <div class="img-slot" id="logoSlot">
+        <img src="images/logo.png" alt="Логотип «Точка будущего»">
+        <div class="img-fallback logo-ph" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M4 18 L10 13 L14 16 L18 12 L21 15"/></svg>
+          <span>logo.png</span>
+        </div>
+      </div>
+    </div>
+    <div class="head-titles">
+      <div class="eyebrow">✨ Межпредметная неделя · 30 ноября — 5 декабря</div>
+      <h1>МО математики, информатики, физики и труда</h1>
+      <div class="head-sub">«От данных к решению» 🚀 · 🧠 Задача дня</div>
+    </div>
+    <div class="head-right">
+      <div class="clock">
+        <div id="clockTime">--<span class="colon">:</span>--</div>
+        <div id="clockDate">…</div>
+      </div>
+      <div class="head-btns">
+        <button class="icon-btn" id="btnPrev" title="Предыдущий слайд (←)" aria-label="Предыдущий слайд">
+          <svg viewBox="0 0 24 24"><path d="M15 5 L8 12 L15 19"/></svg>
+        </button>
+        <button class="icon-btn" id="btnNext" title="Следующий слайд (→)" aria-label="Следующий слайд">
+          <svg viewBox="0 0 24 24"><path d="M9 5 L16 12 L9 19"/></svg>
+        </button>
+        <button class="icon-btn" id="btnFull" title="Полный экран (F)" aria-label="Полный экран">
+          <svg viewBox="0 0 24 24" id="fullIcon"><path d="M4 9 V4 H9 M15 4 H20 V9 M20 15 V20 H15 M9 20 H4 V15"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- вкладки -->
+  <nav class="tabs" role="tablist" aria-label="Дни недели">
+    <button class="tab-btn active" data-slide="1" role="tab"><span class="t-emoji">🐌</span><span class="t-col"><span class="t-day">Понедельник</span><span class="t-date">30 ноября · Задача 1</span></span></button>
+    <button class="tab-btn" data-slide="2" role="tab"><span class="t-emoji">⚖️</span><span class="t-col"><span class="t-day">Вторник</span><span class="t-date">1 декабря · Задача 2</span></span></button>
+    <button class="tab-btn" data-slide="3" role="tab"><span class="t-emoji">🍎</span><span class="t-col"><span class="t-day">Среда</span><span class="t-date">2 декабря · Задача 3</span></span></button>
+    <button class="tab-btn" data-slide="4" role="tab"><span class="t-emoji">🪜</span><span class="t-col"><span class="t-day">Четверг</span><span class="t-date">3 декабря · Задача 4</span></span></button>
+    <button class="tab-btn" data-slide="5" role="tab"><span class="t-emoji">🏆</span><span class="t-col"><span class="t-day">Пятница</span><span class="t-date">4 декабря · Итоги 🎉</span></span></button>
+  </nav>
+
+  <main>
+    <!-- ═══════════ СЛАЙД 1 · ПОНЕДЕЛЬНИК 🐌 ═══════════ -->
+    <section class="slide active" id="slide-1" role="tabpanel">
+      <div class="card q-card rise" style="--d:.05s">
+        <div class="q-ghost" aria-hidden="true">01</div>
+        <div class="q-chips">
+          <span class="chip chip-day">📅 День 1 · Понедельник</span>
+          <span class="chip chip-logic">🧩 Чистая логика</span>
+          <span class="chip chip-try">🎯 Одна попытка</span>
+        </div>
+        <h2 class="q-title">🐌 Улитка-альпинист</h2>
+        <div class="q-text">
+          <div>Улитка ползёт вверх по столбу высотой <em class="num">10 метров</em>.</div>
+          <div>☀️ Днём она поднимается на <em class="num">3 метра</em>,<br>🌙 а ночью сползает на <em class="num">2 метра</em>.</div>
+          <div class="q-ask">За сколько дней улитка доберётся до вершины? 🏁</div>
+        </div>
+        <div class="q-hint">✏️ Ответ — одно число · 💡 Осторожно: первый ответ может быть ловушкой!</div>
+        <div class="q-foot">✍️ В форме укажи фамилию, имя и <b>класс или должность</b> — принять участие может каждый! 🌟</div>
+      </div>
+      <div class="side-col">
+        <div class="qr-card rise" style="--d:.14s">
+          <h3>📲 Ответь на задачу!</h3>
+          <div class="qr-frame">
+            <div class="img-slot">
+              <img src="images/qr1.png" alt="QR-код на форму понедельника">
+              <div class="img-fallback qr-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#25B5E2" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 20h1M20 14h1"/></svg>
+                <div class="fb-title">Здесь будет QR-код 📷</div>
+                <div class="fb-file">images/qr1.png</div>
+              </div>
+            </div>
+          </div>
+          <div class="qr-caption">📱 Наведи камеру телефона</div>
+          <div class="qr-sub">и ответь в Яндекс Форме — регистрация не нужна 😉</div>
+        </div>
+        <div class="card how-card rise" style="--d:.22s">
+          <h3>🚀 Как участвовать</h3>
+          <div class="how-step"><span class="how-num">1</span>📷 Отсканируй QR-код</div>
+          <div class="how-step"><span class="how-num">2</span>✍️ Впиши фамилию, имя, класс/должность и ответ</div>
+          <div class="how-step"><span class="how-num">3</span>🚀 Отправь! Завтра — новая задача и статистика 📊</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ СЛАЙД 2 · ВТОРНИК ⚖️ ═══════════ -->
+    <section class="slide" id="slide-2" role="tabpanel">
+      <div class="card q-card rise" style="--d:.05s">
+        <div class="q-ghost" aria-hidden="true">02</div>
+        <div class="q-chips">
+          <span class="chip chip-day">📅 День 2 · Вторник</span>
+          <span class="chip chip-logic">🧩 Чистая логика</span>
+          <span class="chip chip-try">🎯 Одна попытка</span>
+        </div>
+        <h2 class="q-title">⚖️ Фальшивая монета</h2>
+        <div class="q-text">
+          <div>Есть <em class="num">9 монет</em>, одинаковых на вид.</div>
+          <div>Одна фальшивая — она <em class="num">легче</em> настоящих.</div>
+          <div>⚖️ Под рукой только чашечные весы без гирь.</div>
+          <div class="q-ask">Какое наименьшее число взвешиваний гарантирует, что ты найдёшь фальшивую монету? 🤔</div>
+        </div>
+        <div class="q-hint">✏️ Ответ — одно число · 💡 У весов три исхода: левая легче, правая легче или равновесие!</div>
+        <div class="q-foot">✍️ В форме укажи фамилию, имя и <b>класс или должность</b> — принять участие может каждый! 🌟</div>
+      </div>
+      <div class="side-col">
+        <div class="qr-card rise" style="--d:.14s">
+          <h3>📲 Ответь на задачу!</h3>
+          <div class="qr-frame">
+            <div class="img-slot">
+              <img src="images/qr2.png" alt="QR-код на форму вторника">
+              <div class="img-fallback qr-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#25B5E2" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 20h1M20 14h1"/></svg>
+                <div class="fb-title">Здесь будет QR-код 📷</div>
+                <div class="fb-file">images/qr2.png</div>
+              </div>
+            </div>
+          </div>
+          <div class="qr-caption">📱 Наведи камеру телефона</div>
+          <div class="qr-sub">и ответь в Яндекс Форме — регистрация не нужна 😉</div>
+        </div>
+        <div class="stats-card rise" style="--d:.22s" data-prev="0">
+          <svg class="stats-deco" viewBox="0 0 190 150" fill="none" aria-hidden="true">
+            <rect x="18" y="86" width="30" height="52" rx="8" fill="#8FDDF4"/>
+            <rect x="62" y="56" width="30" height="82" rx="8" fill="#B9E45C"/>
+            <rect x="106" y="26" width="30" height="112" rx="8" fill="#54C77F"/>
+            <path d="M24 74 L70 44 L114 16 L168 6" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="168" cy="6" r="7" fill="#F6B93B"/>
+          </svg>
+          <h3>📊 Итоги понедельника · 🐌 Улитка</h3>
+          <div class="stat-row"><span class="stat-label">📝 Всего ответов</span><span class="stat-value sv-total">—</span></div>
+          <div class="stat-row"><span class="stat-label">✅ Верных ответов</span><span class="stat-value sv-correct">—</span></div>
+          <div class="stat-row"><span class="stat-label">🔥 Самый активный класс</span><span class="stat-value small sv-top">—</span></div>
+          <div class="stats-note">🔄 Данные обновляются каждый вечер</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ СЛАЙД 3 · СРЕДА 🍎 ═══════════ -->
+    <section class="slide" id="slide-3" role="tabpanel">
+      <div class="card q-card rise" style="--d:.05s">
+        <div class="q-ghost" aria-hidden="true">03</div>
+        <div class="q-chips">
+          <span class="chip chip-day">📅 День 3 · Среда</span>
+          <span class="chip chip-logic">🧩 Чистая логика</span>
+          <span class="chip chip-try">🎯 Одна попытка</span>
+        </div>
+        <h2 class="q-title">🍎 Коробки-обманки</h2>
+        <div class="q-text">
+          <div>Три закрытые коробки:</div>
+          <div>с яблоками 🍎, с апельсинами 🍊 и ассорти 🍎🍊.</div>
+          <div>🏷️ Таблички «Яблоки», «Апельсины», «Ассорти» висят на коробках, но <em class="num">все три — неверные</em>.</div>
+          <div class="q-ask">Не заглядывая внутрь, какое наименьшее число фруктов нужно достать, чтобы точно определить содержимое всех коробок? 📦</div>
+        </div>
+        <div class="q-hint">✏️ Ответ — одно число · 💡 Каждая коробка точно НЕ то, что написано на её табличке!</div>
+        <div class="q-foot">✍️ В форме укажи фамилию, имя и <b>класс или должность</b> — принять участие может каждый! 🌟</div>
+      </div>
+      <div class="side-col">
+        <div class="qr-card rise" style="--d:.14s">
+          <h3>📲 Ответь на задачу!</h3>
+          <div class="qr-frame">
+            <div class="img-slot">
+              <img src="images/qr3.png" alt="QR-код на форму среды">
+              <div class="img-fallback qr-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#25B5E2" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 20h1M20 14h1"/></svg>
+                <div class="fb-title">Здесь будет QR-код 📷</div>
+                <div class="fb-file">images/qr3.png</div>
+              </div>
+            </div>
+          </div>
+          <div class="qr-caption">📱 Наведи камеру телефона</div>
+          <div class="qr-sub">и ответь в Яндекс Форме — регистрация не нужна 😉</div>
+        </div>
+        <div class="stats-card rise" style="--d:.22s" data-prev="1">
+          <svg class="stats-deco" viewBox="0 0 190 150" fill="none" aria-hidden="true">
+            <rect x="18" y="86" width="30" height="52" rx="8" fill="#8FDDF4"/>
+            <rect x="62" y="56" width="30" height="82" rx="8" fill="#B9E45C"/>
+            <rect x="106" y="26" width="30" height="112" rx="8" fill="#54C77F"/>
+            <path d="M24 74 L70 44 L114 16 L168 6" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="168" cy="6" r="7" fill="#F6B93B"/>
+          </svg>
+          <h3>📊 Итоги вторника · ⚖️ Монета</h3>
+          <div class="stat-row"><span class="stat-label">📝 Всего ответов</span><span class="stat-value sv-total">—</span></div>
+          <div class="stat-row"><span class="stat-label">✅ Верных ответов</span><span class="stat-value sv-correct">—</span></div>
+          <div class="stat-row"><span class="stat-label">🔥 Самый активный класс</span><span class="stat-value small sv-top">—</span></div>
+          <div class="stats-note">🔄 Данные обновляются каждый вечер</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ СЛАЙД 4 · ЧЕТВЕРГ 🪜 ═══════════ -->
+    <section class="slide" id="slide-4" role="tabpanel">
+      <div class="card q-card rise" style="--d:.05s">
+        <div class="q-ghost" aria-hidden="true">04</div>
+        <div class="q-chips">
+          <span class="chip chip-day">📅 День 4 · Четверг</span>
+          <span class="chip chip-logic">🧩 Чистая логика</span>
+          <span class="chip chip-try">🎯 Одна попытка</span>
+        </div>
+        <h2 class="q-title">🪜 Коварная лестница</h2>
+        <div class="q-text">
+          <div>🏃 С первого этажа до третьего ведёт <em class="num">36 ступенек</em>.</div>
+          <div>🏢 Все пролёты между этажами одинаковые.</div>
+          <div class="q-ask">Сколько ступенек нужно пройти с первого этажа до шестого?</div>
+        </div>
+        <div class="q-hint">✏️ Ответ — одно число · ⚠️ Это задача-ловушка: считай пролёты, а не этажи!</div>
+        <div class="q-foot">✍️ В форме укажи фамилию, имя и <b>класс или должность</b> — принять участие может каждый! 🌟</div>
+      </div>
+      <div class="side-col">
+        <div class="qr-card rise" style="--d:.14s">
+          <h3>📲 Ответь на задачу!</h3>
+          <div class="qr-frame">
+            <div class="img-slot">
+              <img src="images/qr4.png" alt="QR-код на форму четверга">
+              <div class="img-fallback qr-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#25B5E2" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 20h1M20 14h1"/></svg>
+                <div class="fb-title">Здесь будет QR-код 📷</div>
+                <div class="fb-file">images/qr4.png</div>
+              </div>
+            </div>
+          </div>
+          <div class="qr-caption">📱 Наведи камеру телефона</div>
+          <div class="qr-sub">и ответь в Яндекс Форме — регистрация не нужна 😉</div>
+        </div>
+        <div class="stats-card rise" style="--d:.22s" data-prev="2">
+          <svg class="stats-deco" viewBox="0 0 190 150" fill="none" aria-hidden="true">
+            <rect x="18" y="86" width="30" height="52" rx="8" fill="#8FDDF4"/>
+            <rect x="62" y="56" width="30" height="82" rx="8" fill="#B9E45C"/>
+            <rect x="106" y="26" width="30" height="112" rx="8" fill="#54C77F"/>
+            <path d="M24 74 L70 44 L114 16 L168 6" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="168" cy="6" r="7" fill="#F6B93B"/>
+          </svg>
+          <h3>📊 Итоги среды · 🍎 Коробки</h3>
+          <div class="stat-row"><span class="stat-label">📝 Всего ответов</span><span class="stat-value sv-total">—</span></div>
+          <div class="stat-row"><span class="stat-label">✅ Верных ответов</span><span class="stat-value sv-correct">—</span></div>
+          <div class="stat-row"><span class="stat-label">🔥 Самый активный класс</span><span class="stat-value small sv-top">—</span></div>
+          <div class="stats-note">🔄 Данные обновляются каждый вечер</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ СЛАЙД 5 · ПЯТНИЦА 🏆 ИТОГИ ═══════════ -->
+    <section class="slide" id="slide-5" role="tabpanel">
+      <div class="confetti" aria-hidden="true">
+        <i style="left:4%;top:14%;width:14px;height:24px;background:#25B5E2;border-radius:4px;animation-duration:14s;"></i>
+        <i style="left:12%;top:66%;width:10px;height:10px;background:#F6B93B;border-radius:50%;animation-duration:18s;animation-delay:.6s;"></i>
+        <i style="left:22%;top:24%;width:12px;height:20px;background:#54C77F;border-radius:4px;animation-duration:16s;animation-delay:1.1s;"></i>
+        <i style="left:31%;top:78%;width:14px;height:24px;background:#FF6F61;border-radius:4px;animation-duration:20s;animation-delay:.3s;"></i>
+        <i style="left:44%;top:10%;width:10px;height:10px;background:#B9E45C;border-radius:50%;animation-duration:15s;animation-delay:.9s;"></i>
+        <i style="left:52%;top:60%;width:12px;height:22px;background:#0E7FA6;border-radius:4px;animation-duration:19s;animation-delay:1.4s;"></i>
+        <i style="left:63%;top:18%;width:14px;height:24px;background:#F6B93B;border-radius:4px;animation-duration:17s;animation-delay:.2s;"></i>
+        <i style="left:72%;top:74%;width:10px;height:10px;background:#25B5E2;border-radius:50%;animation-duration:21s;animation-delay:1s;"></i>
+        <i style="left:83%;top:30%;width:12px;height:22px;background:#54C77F;border-radius:4px;animation-duration:15s;animation-delay:.5s;"></i>
+        <i style="left:92%;top:64%;width:14px;height:24px;background:#FF6F61;border-radius:4px;animation-duration:18s;animation-delay:1.3s;"></i>
+        <i style="left:96%;top:12%;width:10px;height:10px;background:#B9E45C;border-radius:50%;animation-duration:16s;animation-delay:.8s;"></i>
+        <i style="left:8%;top:40%;width:12px;height:20px;background:#0E7FA6;border-radius:4px;animation-duration:22s;animation-delay:1.6s;"></i>
+      </div>
+      <div class="final-left">
+        <div class="card podium-card rise" style="--d:.05s">
+          <h2>🏆 Топ-3 участника недели</h2>
+          <div class="podium-sub">🧠 4 задачи · 🎯 1 попытка в день · максимум 4 верных ответа</div>
+          <div class="podium">
+            <div class="pod pod-2 rise" style="--d:.2s" data-top="1">
+              <span class="medal">🥈</span>
+              <div class="pod-bar" data-rank="2">
+                <div class="p-name pending">—</div>
+                <div class="p-group">класс/должность</div>
+                <div class="p-score">—</div>
+              </div>
+            </div>
+            <div class="pod pod-1 rise" style="--d:.12s" data-top="0">
+              <span class="medal">🥇</span>
+              <div class="pod-bar" data-rank="1">
+                <div class="p-name pending">—</div>
+                <div class="p-group">класс/должность</div>
+                <div class="p-score">—</div>
+              </div>
+            </div>
+            <div class="pod pod-3 rise" style="--d:.28s" data-top="2">
+              <span class="medal">🥉</span>
+              <div class="pod-bar" data-rank="3">
+                <div class="p-name pending">—</div>
+                <div class="p-group">класс/должность</div>
+                <div class="p-score">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="final-right">
+        <div class="card nums-card rise" style="--d:.16s">
+          <h3>📈 Неделя в цифрах</h3>
+          <div class="nums-grid">
+            <div class="num-cell"><div class="n-val pending" id="fvParticipants">—</div><div class="n-lab">👥 участников</div></div>
+            <div class="num-cell"><div class="n-val pending" id="fvAnswers">—</div><div class="n-lab">✉️ ответов</div></div>
+            <div class="num-cell"><div class="n-val pending" id="fvCorrect">—</div><div class="n-lab">✅ верных</div></div>
+          </div>
+        </div>
+        <div class="card active-card rise" style="--d:.24s">
+          <span class="a-lab">🔥 Самый активный класс</span>
+          <span class="a-val pending" id="fvTopGroup">—</span>
+        </div>
+        <div class="card answers-card rise" style="--d:.32s">
+          <h3>🔑 Правильные ответы</h3>
+          <div class="ans-row"><span class="a-name">🐌 Пн · Улитка-альпинист</span><span class="a-key">8 дней</span></div>
+          <div class="ans-row"><span class="a-name">⚖️ Вт · Фальшивая монета</span><span class="a-key">2 взвешивания</span></div>
+          <div class="ans-row"><span class="a-name">🍎 Ср · Коробки-обманки</span><span class="a-key">1 фрукт</span></div>
+          <div class="ans-row"><span class="a-name">🪜 Чт · Коварная лестница</span><span class="a-key">90 ступенек</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="stage-foot">
+    <span>✨ Точка будущего · Задача дня · 30 ноября — 4 декабря</span>
+    <span class="f-right"><span>листай <kbd>←</kbd> <kbd>→</kbd> или <kbd>1</kbd>–<kbd>5</kbd></span><span id="pageInd">1 / 5</span></span>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   📊 ДАННЫЕ НЕДЕЛИ — ОБНОВЛЯЙ КАЖДЫЙ ВЕЧЕР ТОЛЬКО ЭТОТ БЛОК!
+   null → на экране заглушка «—». Заменяй null на числа/строки.
+   topGroup — только КЛАСС (например '7Б').
+   ════════════════════════════════════════════════════════════════ */
+const WEEK_DATA = {
+  days: [
+    { total: null, correct: null, topGroup: null }, // 🐌 Понедельник (ответ: 8)
+    { total: null, correct: null, topGroup: null }, // ⚖️ Вторник    (ответ: 2)
+    { total: null, correct: null, topGroup: null }, // 🍎 Среда      (ответ: 1)
+    { total: null, correct: null, topGroup: null }  // 🪜 Четверг    (ответ: 90)
+  ],
+  final: { participants: null, answers: null, correct: null, topGroup: null },
+  top3: [
+    { name: null, group: null, score: null }, // 🥇 1 место
+    { name: null, group: null, score: null }, // 🥈 2 место
+    { name: null, group: null, score: null }  // 🥉 3 место
+  ]
+};
+/* Пример заполнения в понедельник вечером:
+   WEEK_DATA.days[0] = { total: 47, correct: 21, topGroup: '7Б' };
+   В пятницу: final = { participants: 132, answers: 380, correct: 154, topGroup: '7Б' },
+   top3[0] = { name: 'Иван Петров', group: '7Б', score: 4 } и т.д. */
+
+(function(){
+  'use strict';
+  const stageEl = document.getElementById('stage');
+  const tabButtons = Array.from(document.querySelectorAll('.tab-btn'));
+  const slideSections = Array.from(document.querySelectorAll('.slide'));
+  const pageIndicator = document.getElementById('pageInd');
+  let currentSlideNum = 1;
+
+  /* ── масштаб 1920×1080 под любой экран ── */
+  function fitStage(){
+    const scaleFit = Math.min(window.innerWidth/1920, window.innerHeight/1080);
+    stageEl.style.transform = 'translate(-50%,-50%) scale(' + scaleFit + ')';
+  }
+  window.addEventListener('resize', fitStage);
+  window.addEventListener('orientationchange', fitStage);
+  document.addEventListener('fullscreenchange', fitStage);
+
+  /* ── переключение слайдов ── */
+  function goToSlide(num){
+    const target = Math.min(5, Math.max(1, num));
+    currentSlideNum = target;
+    slideSections.forEach(sec => sec.classList.toggle('active', sec.id === 'slide-' + target));
+    tabButtons.forEach(btn => {
+      const isActive = Number(btn.dataset.slide) === target;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    pageIndicator.textContent = target + ' / 5';
+  }
+  tabButtons.forEach(btn => btn.addEventListener('click', () => goToSlide(Number(btn.dataset.slide))));
+  document.getElementById('btnPrev').addEventListener('click', () => goToSlide(currentSlideNum - 1));
+  document.getElementById('btnNext').addEventListener('click', () => goToSlide(currentSlideNum + 1));
+
+  /* ── клавиатура: стрелки, 1–5, F/А — полный экран ── */
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === 'ArrowRight') goToSlide(currentSlideNum + 1);
+    else if (ev.key === 'ArrowLeft') goToSlide(currentSlideNum - 1);
+    else if (/^[1-5]$/.test(ev.key)) goToSlide(Number(ev.key));
+    else if (['f','F','а','А'].includes(ev.key)) toggleFullscreen();
+  });
+
+  /* ── полный экран ── */
+  const fullIconEl = document.getElementById('fullIcon');
+  function toggleFullscreen(){
+    const rootEl = document.documentElement;
+    if (!document.fullscreenElement) {
+      const req = rootEl.requestFullscreen || rootEl.webkitRequestFullscreen;
+      if (req) { try { const p = req.call(rootEl); if (p && p.catch) p.catch(()=>{}); } catch(e){} }
+    } else {
+      const exit = document.exitFullscreen || document.webkitExitFullscreen;
+      if (exit) { try { const p = exit.call(document); if (p && p.catch) p.catch(()=>{}); } catch(e){} }
+    }
+  }
+  document.getElementById('btnFull').addEventListener('click', toggleFullscreen);
+  document.addEventListener('fullscreenchange', () => {
+    fullIconEl.innerHTML = document.fullscreenElement
+      ? '<path d="M9 4 V9 H4 M20 9 H15 V4 M15 20 V15 H20 M4 15 H9 V20"/>'
+      : '<path d="M4 9 V4 H9 M15 4 H20 V9 M20 15 V20 H15 M9 20 H4 V15"/>';
+    fitStage();
+  });
+
+  /* ── часы в шапке ── */
+  const clockTimeEl = document.getElementById('clockTime');
+  const clockDateEl = document.getElementById('clockDate');
+  function tickClock(){
+    const nowDate = new Date();
+    const hh = String(nowDate.getHours()).padStart(2,'0');
+    const mm = String(nowDate.getMinutes()).padStart(2,'0');
+    clockTimeEl.innerHTML = hh + '<span class="colon">:</span>' + mm;
+    clockDateEl.textContent = nowDate.toLocaleDateString('ru-RU',{weekday:'short',day:'numeric',month:'long'});
+  }
+  tickClock();
+  setInterval(tickClock, 1000);
+
+  /* ── картинки: показываем, когда загрузились; иначе — заглушка ── */
+  document.querySelectorAll('.img-slot').forEach(slotBox => {
+    const picEl = slotBox.querySelector('img');
+    if (!picEl) return;
+    const markLoaded = () => { if (picEl.naturalWidth > 0) slotBox.classList.add('loaded'); };
+    picEl.addEventListener('load', markLoaded);
+    picEl.addEventListener('error', () => slotBox.classList.remove('loaded'));
+    if (picEl.complete) markLoaded();
+  });
+
+  /* ── рендер статистики из WEEK_DATA ── */
+  function setValue(el, val){
+    if (!el) return;
+    if (val === null || val === undefined || val === '') {
+      el.textContent = '—';
+      el.classList.add('pending');
+    } else {
+      el.textContent = String(val);
+      el.classList.remove('pending');
+    }
+  }
+  function renderStats(){
+    document.querySelectorAll('[data-prev]').forEach(cardBox => {
+      const dayIdx = Number(cardBox.dataset.prev);
+      const dayData = WEEK_DATA.days[dayIdx] || {};
+      setValue(cardBox.querySelector('.sv-total'), dayData.total);
+      setValue(cardBox.querySelector('.sv-correct'), dayData.correct);
+      setValue(cardBox.querySelector('.sv-top'), dayData.topGroup);
+    });
+    setValue(document.getElementById('fvParticipants'), WEEK_DATA.final.participants);
+    setValue(document.getElementById('fvAnswers'), WEEK_DATA.final.answers);
+    setValue(document.getElementById('fvCorrect'), WEEK_DATA.final.correct);
+    setValue(document.getElementById('fvTopGroup'), WEEK_DATA.final.topGroup);
+    document.querySelectorAll('[data-top]').forEach(podBox => {
+      const personIdx = Number(podBox.dataset.top);
+      const person = WEEK_DATA.top3[personIdx] || {};
+      setValue(podBox.querySelector('.p-name'), person.name);
+      podBox.querySelector('.p-group').textContent = person.group ? person.group : 'класс/должность';
+      const scoreVal = (person.score === null || person.score === undefined) ? null : person.score + '/4';
+      setValue(podBox.querySelector('.p-score'), scoreVal);
+    });
+  }
+  renderStats();
+
+  /* ── автовыбор вкладки по дате: при открытии, обновлении и в полночь ── */
+  const scheduleMap = { '2026-11-30':1, '2026-12-01':2, '2026-12-02':3, '2026-12-03':4, '2026-12-04':5 };
+  function dayKeyOf(d){
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+  function slideForDate(key){
+    if (scheduleMap[key]) return scheduleMap[key];
+    if (key > '2026-12-04') return 5;
+    return 1;
+  }
+  function markTodayTab(key){
+    const todaySlide = scheduleMap[key] || 0;
+    tabButtons.forEach(btn => btn.classList.toggle('today', Number(btn.dataset.slide) === todaySlide));
+  }
+  let lastDayKey = dayKeyOf(new Date());
+  markTodayTab(lastDayKey);
+  goToSlide(slideForDate(lastDayKey));
+  /* если экран атриума остаётся включённым — в полночь вкладка сама сменится */
+  setInterval(() => {
+    const freshKey = dayKeyOf(new Date());
+    if (freshKey !== lastDayKey) {
+      lastDayKey = freshKey;
+      markTodayTab(freshKey);
+      goToSlide(slideForDate(freshKey));
+    }
+  }, 30000);
+
+  fitStage();
+})();
+</script>
+</body>
+</html>
