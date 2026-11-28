@@ -6,16 +6,14 @@
   ══════════════════════════════════════════════════════════════════
 
   ✅ ПРАВИЛЬНЫЕ ОТВЕТЫ (до пятницы на экране НЕ показываются):
-     День 1 · Пн 30.11 · 🐌 Улитка-альпинист ......... 8  (дней)
-        (за 7 суток улитка на 7 м; на 8-й день +3 м → вершина)
-     День 2 · Вт 01.12 · ⚖️ Фальшивая монета ......... 2  (взвешивания)
-        (9 монет → 3+3+3: первое взвешивание оставляет 3 подозрительные,
-         второе находит одну; у весов три исхода, а не два)
-     День 3 · Ср 02.12 · 🍎 Коробки-обманки .......... 1  (фрукт)
-        (достать фрукт из коробки с табличкой «Смесь»: она не смесь,
-         значит чистая; остальные две восстанавливаются по неверным табличкам)
-     День 4 · Чт 03.12 · 🪜 Коварная лестница ........ 90 (ступенек)
-        (1→3 этаж = 2 пролёта по 18; 1→6 этаж = 5 пролётов = 90)
+     День 1 · Пн 30.11 · 🕗 Чей день длиннее? ......... 210 (минут)
+        (детсад 7:00–19:00 = 720 мин; школа 8:30–17:00 = 510 мин; 720−510)
+     День 2 · Вт 01.12 · 📮 Два индекса ............... 12
+        (Москва 123112: 1·2·3·1·1·2 = 12; Иркутск 664050: 6·6·4·0·5·0 = 0; 12+0)
+     День 3 · Ср 02.12 · 🎂 День рождения школы ....... 2557 (дней)
+        (создание 4 июня 2019; до 4 июня 2026 = 7×365 + 2 високосных дня: 2020, 2024)
+     День 4 · Чт 03.12 · 🔤 Слово из фамилий .......... РОК
+        (Рожкова — качество образования, Орлова — доп. образование, Кучма — воспитание)
      (ответы автоматически видны только на 5-й вкладке «Итоги»)
 
   🖼 ФАЙЛЫ КАРТИНОК — положить в папку images/ рядом с этим файлом:
@@ -30,8 +28,8 @@
      В самом низу файла найди блок  const WEEK_DATA = {...}
      и замени null на реальные числа/строки из таблиц:
        days[0..3]  — итоги пн/вт/ср/чт (total, correct, topGroup = КЛАСС)
-       final       — итоги всей недели (topGroup = КЛАСС)
-       top3        — три призёра: name, group (класс ИЛИ должность), score (0–4)
+       final       — итоги всей недели (participants, answers, correct)
+       top3        — три самых активных КЛАССА: name (класс), score (ответов)
      null = на экране остаётся заглушка «—».
 
   🗓 ВКЛАДКИ: при открытии и обновлении страницы автоматически
@@ -188,18 +186,25 @@ main{position:relative;z-index:2;flex:1;min-height:0;padding:22px 40px;}
 .q-card::before{content:"";position:absolute;top:0;left:0;right:0;height:7px;background:var(--grad-brand);}
 .q-ghost{position:absolute;right:14px;bottom:-38px;font-family:var(--font-disp);font-weight:800;font-size:240px;line-height:1;
   color:transparent;-webkit-text-stroke:2px rgba(37,181,226,.16);pointer-events:none;z-index:0;letter-spacing:-.04em;}
-.q-chips,.q-title,.q-text,.q-hint,.q-foot{position:relative;z-index:1;}
+.q-chips,.q-title,.q-text,.q-hint,.q-source,.q-foot{position:relative;z-index:1;}
 .q-chips{display:flex;gap:12px;flex-wrap:wrap;}
 .chip{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:8px 18px;font-size:19px;font-weight:800;}
 .chip-day{background:var(--cyan-mist);color:var(--teal);}
 .chip-logic{background:var(--mint);color:var(--green-deep);}
 .chip-try{background:var(--gold-soft);color:#B7791F;}
 .q-title{font-family:var(--font-disp);font-weight:800;font-size:42px;margin:20px 0 6px;color:var(--deep);}
-.q-text{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;font-size:37px;font-weight:700;line-height:1.42;color:#24313C;padding:8px 0;}
+.q-text{flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px;font-size:35px;font-weight:700;line-height:1.4;color:#24313C;padding:8px 0;}
 .q-text .q-ask{color:var(--teal);font-weight:800;}
 .num{font-style:normal;font-weight:800;background:var(--grad-num);-webkit-background-clip:text;background-clip:text;color:transparent;}
 .q-hint{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;font-size:22px;font-weight:800;color:var(--green-deep);
-  background:var(--mint);border:2px dashed var(--green);border-radius:14px;padding:9px 20px;margin-bottom:16px;}
+  background:var(--mint);border:2px dashed var(--green);border-radius:14px;padding:9px 20px;margin-bottom:10px;}
+.q-source{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--cyan-mist);border:2px dashed var(--cyan-soft);
+  border-radius:14px;padding:9px 20px;margin-bottom:14px;font-size:19px;font-weight:700;color:var(--teal);}
+.q-source .src-ico{font-size:20px;line-height:1;}
+.q-source a{color:var(--teal);font-weight:800;text-decoration:none;border-bottom:2px dotted var(--cyan);word-break:break-all;}
+.q-source a:hover{color:var(--deep);border-bottom-color:var(--deep);}
+.q-source .src-arrow{color:var(--cyan);font-weight:800;}
+.q-source .src-section{color:var(--deep);font-weight:800;}
 .q-foot{background:linear-gradient(100deg,var(--cyan-mist),var(--mint));border-radius:16px;padding:14px 22px;font-size:21px;font-weight:700;color:var(--deep);}
 .q-foot b{color:var(--teal);}
 
@@ -223,19 +228,21 @@ main{position:relative;z-index:2;flex:1;min-height:0;padding:22px 40px;}
 .qr-caption{margin-top:12px;font-size:22px;font-weight:800;color:var(--ink);}
 .qr-sub{font-size:16px;font-weight:600;color:var(--slate);margin-top:2px;}
 
-/* Тёмная карточка статистики */
-.stats-card{background:linear-gradient(135deg,#0A3D4F 0%,#0E7FA6 70%,#1490B4 100%);border:none;color:#fff;
-  border-radius:26px;padding:20px 28px;display:flex;flex-direction:column;box-shadow:0 22px 50px rgba(10,61,79,.35);position:relative;overflow:hidden;}
-.stats-deco{position:absolute;right:-12px;bottom:-16px;width:190px;height:150px;opacity:.16;pointer-events:none;z-index:0;}
+/* Светлая карточка статистики (как «как участвовать» на 1-м слайде) */
+.stats-card{background:var(--card);border:1px solid var(--line);color:var(--ink);
+  border-radius:26px;padding:20px 28px;display:flex;flex-direction:column;box-shadow:0 22px 50px rgba(14,127,166,.12);position:relative;overflow:hidden;}
+.stats-card::before{content:"";position:absolute;top:0;left:0;right:0;height:7px;background:var(--grad-brand);}
+.stats-deco{position:absolute;right:-12px;bottom:-16px;width:190px;height:150px;opacity:.3;pointer-events:none;z-index:0;}
 .stats-card h3,.stats-card .stat-row,.stats-card .stats-note{position:relative;z-index:1;}
-.stats-card h3{font-family:var(--font-disp);font-weight:600;font-size:22px;margin-bottom:8px;color:#fff;}
-.stat-row{flex:1;display:flex;align-items:center;justify-content:space-between;gap:14px;border-top:1px solid rgba(255,255,255,.18);padding:6px 0;}
+.stats-card h3{font-family:var(--font-disp);font-weight:600;font-size:22px;margin-bottom:8px;color:var(--deep);}
+.stat-row{flex:1;display:flex;align-items:center;justify-content:space-between;gap:14px;border-top:1px solid var(--line);padding:6px 0;}
 .stat-row:first-of-type{border-top:none;}
-.stat-label{font-size:20px;font-weight:700;color:rgba(255,255,255,.9);}
-.stat-value{font-family:var(--font-disp);font-weight:800;font-size:42px;line-height:1;}
+.stat-label{font-size:20px;font-weight:700;color:var(--slate);}
+.stat-value{font-family:var(--font-disp);font-weight:800;font-size:42px;line-height:1;
+  background:var(--grad-num);-webkit-background-clip:text;background-clip:text;color:transparent;}
 .stat-value.small{font-size:29px;}
-.pending{color:rgba(255,255,255,.45);}
-.stats-note{font-size:14px;font-weight:700;color:rgba(255,255,255,.65);margin-top:6px;}
+.stat-value.pending{background:none;color:#9DB4BE;}
+.stats-note{font-size:14px;font-weight:700;color:var(--slate);margin-top:6px;}
 
 /* Карточка «как участвовать» (понедельник) */
 .how-card{padding:20px 28px;display:flex;flex-direction:column;}
@@ -262,14 +269,13 @@ main{position:relative;z-index:2;flex:1;min-height:0;padding:22px 40px;}
 .pod-3 .medal{animation-delay:.5s;}
 @keyframes medalBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
 .pod-bar{width:100%;border-radius:22px 22px 12px 12px;color:#fff;display:flex;flex-direction:column;align-items:center;
-  padding:20px 16px 14px;position:relative;overflow:hidden;box-shadow:0 18px 38px rgba(10,61,79,.28);}
+  padding:24px 16px 16px;position:relative;overflow:hidden;box-shadow:0 18px 38px rgba(10,61,79,.28);}
 .pod-1 .pod-bar{height:480px;background:linear-gradient(165deg,#25B5E2,#0E7FA6 55%,#2FA36B);}
 .pod-2 .pod-bar{height:392px;background:linear-gradient(165deg,#4FC3E8,#1B93BC);}
 .pod-3 .pod-bar{height:330px;background:linear-gradient(165deg,#63CE8C,#2FA36B);}
 .pod-bar::after{content:attr(data-rank);position:absolute;bottom:-26px;right:6px;font-family:var(--font-disp);font-weight:800;font-size:120px;color:rgba(255,255,255,.16);line-height:1;}
-.p-name{font-family:var(--font-disp);font-weight:600;font-size:24px;text-align:center;line-height:1.25;min-height:60px;display:flex;align-items:center;}
+.p-name{font-family:var(--font-disp);font-weight:800;font-size:44px;text-align:center;line-height:1.15;min-height:60px;display:flex;align-items:center;}
 .p-name.pending{color:rgba(255,255,255,.6);border-bottom:3px dashed rgba(255,255,255,.4);}
-.p-group{font-size:18px;font-weight:700;color:rgba(255,255,255,.9);text-align:center;}
 .p-score{margin-top:auto;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.4);border-radius:999px;
   padding:7px 18px;font-family:var(--font-disp);font-weight:800;font-size:22px;position:relative;z-index:1;}
 .final-right{display:flex;flex-direction:column;gap:22px;}
@@ -280,11 +286,6 @@ main{position:relative;z-index:2;flex:1;min-height:0;padding:22px 40px;}
 .num-cell .n-val{font-family:var(--font-disp);font-weight:800;font-size:46px;background:var(--grad-num);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.1;}
 .num-cell .n-val.pending{background:none;color:#9DB4BE;}
 .num-cell .n-lab{font-size:16px;font-weight:800;color:var(--slate);margin-top:4px;}
-.active-card{flex:0 0 auto;padding:16px 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;
-  background:linear-gradient(100deg,#FFF6E3,#FFEFD9);border-color:#F3DCA8;}
-.active-card .a-lab{font-size:20px;font-weight:800;color:#8A6116;}
-.active-card .a-val{font-family:var(--font-disp);font-weight:800;font-size:30px;color:#B7791F;}
-.active-card .a-val.pending{color:#CBB27E;}
 .answers-card{flex:1.25;padding:20px 30px;display:flex;flex-direction:column;justify-content:center;}
 .ans-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0;border-top:1px solid var(--line);font-size:21px;font-weight:700;}
 .ans-row:first-of-type{border-top:none;}
@@ -368,30 +369,30 @@ kbd{background:#fff;border:1px solid var(--line);border-bottom-width:3px;border-
 
   <!-- вкладки -->
   <nav class="tabs" role="tablist" aria-label="Дни недели">
-    <button class="tab-btn active" data-slide="1" role="tab"><span class="t-emoji">🐌</span><span class="t-col"><span class="t-day">Понедельник</span><span class="t-date">30 ноября · Задача 1</span></span></button>
-    <button class="tab-btn" data-slide="2" role="tab"><span class="t-emoji">⚖️</span><span class="t-col"><span class="t-day">Вторник</span><span class="t-date">1 декабря · Задача 2</span></span></button>
-    <button class="tab-btn" data-slide="3" role="tab"><span class="t-emoji">🍎</span><span class="t-col"><span class="t-day">Среда</span><span class="t-date">2 декабря · Задача 3</span></span></button>
-    <button class="tab-btn" data-slide="4" role="tab"><span class="t-emoji">🪜</span><span class="t-col"><span class="t-day">Четверг</span><span class="t-date">3 декабря · Задача 4</span></span></button>
+    <button class="tab-btn active" data-slide="1" role="tab"><span class="t-emoji">🕗</span><span class="t-col"><span class="t-day">Понедельник</span><span class="t-date">30 ноября · Задача 1</span></span></button>
+    <button class="tab-btn" data-slide="2" role="tab"><span class="t-emoji">📮</span><span class="t-col"><span class="t-day">Вторник</span><span class="t-date">1 декабря · Задача 2</span></span></button>
+    <button class="tab-btn" data-slide="3" role="tab"><span class="t-emoji">🎂</span><span class="t-col"><span class="t-day">Среда</span><span class="t-date">2 декабря · Задача 3</span></span></button>
+    <button class="tab-btn" data-slide="4" role="tab"><span class="t-emoji">🔤</span><span class="t-col"><span class="t-day">Четверг</span><span class="t-date">3 декабря · Задача 4</span></span></button>
     <button class="tab-btn" data-slide="5" role="tab"><span class="t-emoji">🏆</span><span class="t-col"><span class="t-day">Пятница</span><span class="t-date">4 декабря · Итоги 🎉</span></span></button>
   </nav>
 
   <main>
-    <!-- ═══════════ СЛАЙД 1 · ПОНЕДЕЛЬНИК 🐌 ═══════════ -->
+    <!-- ═══════════ СЛАЙД 1 · ПОНЕДЕЛЬНИК 🕗 ═══════════ -->
     <section class="slide active" id="slide-1" role="tabpanel">
       <div class="card q-card rise" style="--d:.05s">
         <div class="q-ghost" aria-hidden="true">01</div>
         <div class="q-chips">
           <span class="chip chip-day">📅 День 1 · Понедельник</span>
-          <span class="chip chip-logic">🧩 Чистая логика</span>
+          <span class="chip chip-logic">🔍 Поиск + логика</span>
           <span class="chip chip-try">🎯 Одна попытка</span>
         </div>
-        <h2 class="q-title">🐌 Улитка-альпинист</h2>
+        <h2 class="q-title">🕗 Чей день длиннее?</h2>
         <div class="q-text">
-          <div>Улитка ползёт вверх по столбу высотой <em class="num">10 метров</em>.</div>
-          <div>☀️ Днём она поднимается на <em class="num">3 метра</em>,<br>🌙 а ночью сползает на <em class="num">2 метра</em>.</div>
-          <div class="q-ask">За сколько дней улитка доберётся до вершины? 🏁</div>
+          <div>Школьный день длится от первого урока до окончания работы школы, а детский сад открыт с утра до вечера. 🌅</div>
+          <div class="q-ask">На сколько минут день детского сада длиннее школьного дня? 🤔</div>
         </div>
-        <div class="q-hint">✏️ Ответ — одно число · 💡 Осторожно: первый ответ может быть ловушкой!</div>
+        <div class="q-hint">✏️ Ответ — число минут · 💡 Переведи часы в минуты!</div>
+        <div class="q-source"><span class="src-ico">🔎</span><a href="https://иркутск.точкабудущего.рф/" target="_blank" rel="noopener">https://иркутск.точкабудущего.рф/</a><span class="src-arrow">→</span><span class="src-section">Сведения об образовательной организации</span></div>
         <div class="q-foot">✍️ В форме укажи фамилию, имя и <b>класс или должность</b> — принять участие может каждый! 🌟</div>
       </div>
       <div class="side-col">
@@ -419,23 +420,24 @@ kbd{background:#fff;border:1px solid var(--line);border-bottom-width:3px;border-
       </div>
     </section>
 
-    <!-- ═══════════ СЛАЙД 2 · ВТОРНИК ⚖️ ═══════════ -->
+    <!-- ═══════════ СЛАЙД 2 · ВТОРНИК 📮 ═══════════ -->
     <section class="slide" id="slide-2" role="tabpanel">
       <div class="card q-card rise" style="--d:.05s">
         <div class="q-ghost" aria-hidden="true">02</div>
         <div class="q-chips">
           <span class="chip chip-day">📅 День 2 · Вторник</span>
-          <span class="chip chip-logic">🧩 Чистая логика</span>
+          <span class="chip chip-logic">🔍 Поиск + логика</span>
           <span class="chip chip-try">🎯 Одна попытка</span>
         </div>
-        <h2 class="q-title">⚖️ Фальшивая монета</h2>
+        <h2 class="q-title">📮 Два индекса</h2>
         <div class="q-text">
-          <div>Есть <em class="num">9 монет</em>, одинаковых на вид.</div>
-          <div>Одна фальшивая — она <em class="num">легче</em> настоящих.</div>
-          <div>⚖️ Под рукой только чашечные весы без гирь.</div>
-          <div class="q-ask">Какое наименьшее число взвешиваний гарантирует, что ты найдёшь фальшивую монету? 🤔</div>
+          <div>У школы два почтовых индекса:</div>
+          <div>🏙️ <em class="num">московский</em> — в юридическом адресе;</div>
+          <div>🌊 <em class="num">иркутский</em> — в почтовом адресе.</div>
+          <div class="q-ask">Что получится, если перемножить все цифры каждого индекса, а затем сложить два получившихся произведения? 🧮</div>
         </div>
-        <div class="q-hint">✏️ Ответ — одно число · 💡 У весов три исхода: левая легче, правая легче или равновесие!</div>
+        <div class="q-hint">✏️ Ответ — число · 💡 Два индекса — два произведения, потом сложи!</div>
+        <div class="q-source"><span class="src-ico">🔎</span><a href="https://иркутск.точкабудущего.рф/" target="_blank" rel="noopener">https://иркутск.точкабудущего.рф/</a><span class="src-arrow">→</span><span class="src-section">Сведения об образовательной организации</span></div>
         <div class="q-foot">✍️ В форме укажи фамилию, имя и <b>класс или должность</b> — принять участие может каждый! 🌟</div>
       </div>
       <div class="side-col">
@@ -459,10 +461,10 @@ kbd{background:#fff;border:1px solid var(--line);border-bottom-width:3px;border-
             <rect x="18" y="86" width="30" height="52" rx="8" fill="#8FDDF4"/>
             <rect x="62" y="56" width="30" height="82" rx="8" fill="#B9E45C"/>
             <rect x="106" y="26" width="30" height="112" rx="8" fill="#54C77F"/>
-            <path d="M24 74 L70 44 L114 16 L168 6" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+            <path d="M24 74 L70 44 L114 16 L168 6" stroke="#0E7FA6" stroke-width="4" stroke-linecap="round"/>
             <circle cx="168" cy="6" r="7" fill="#F6B93B"/>
           </svg>
-          <h3>📊 Итоги понедельника · 🐌 Улитка</h3>
+          <h3>📊 Итоги понедельника · 🕗 Расписание</h3>
           <div class="stat-row"><span class="stat-label">📝 Всего ответов</span><span class="stat-value sv-total">—</span></div>
           <div class="stat-row"><span class="stat-label">✅ Верных ответов</span><span class="stat-value sv-correct">—</span></div>
           <div class="stat-row"><span class="stat-label">🔥 Самый активный класс</span><span class="stat-value small sv-top">—</span></div>
@@ -471,23 +473,22 @@ kbd{background:#fff;border:1px solid var(--line);border-bottom-width:3px;border-
       </div>
     </section>
 
-    <!-- ═══════════ СЛАЙД 3 · СРЕДА 🍎 ═══════════ -->
+    <!-- ═══════════ СЛАЙД 3 · СРЕДА 🎂 ═══════════ -->
     <section class="slide" id="slide-3" role="tabpanel">
       <div class="card q-card rise" style="--d:.05s">
         <div class="q-ghost" aria-hidden="true">03</div>
         <div class="q-chips">
           <span class="chip chip-day">📅 День 3 · Среда</span>
-          <span class="chip chip-logic">🧩 Чистая логика</span>
+          <span class="chip chip-logic">🔍 Поиск + логика</span>
           <span class="chip chip-try">🎯 Одна попытка</span>
         </div>
-        <h2 class="q-title">🍎 Коробки-обманки</h2>
+        <h2 class="q-title">🎂 День рождения школы</h2>
         <div class="q-text">
-          <div>Три закрытые коробки:</div>
-          <div>с яблоками 🍎, с апельсинами 🍊 и ассорти 🍎🍊.</div>
-          <div>🏷️ Таблички «Яблоки», «Апельсины», «Ассорти» висят на коробках, но <em class="num">все три — неверные</em>.</div>
-          <div class="q-ask">Не заглядывая внутрь, какое наименьшее число фруктов нужно достать, чтобы точно определить содержимое всех коробок? 📦</div>
+          <div>Школа отмечает день рождения в дату своего создания. 🎉</div>
+          <div class="q-ask">Сколько дней прошло от дня основания до той же даты в <em class="num">2026</em> году, с учётом високосных лет? 📅</div>
         </div>
-        <div class="q-hint">✏️ Ответ — одно число · 💡 Каждая коробка точно НЕ то, что написано на её табличке!</div>
+        <div class="q-hint">✏️ Ответ — число дней · 💡 Не забудь високосные годы!</div>
+        <div class="q-source"><span class="src-ico">🔎</span><a href="https://иркутск.точкабудущего.рф/" target="_blank" rel="noopener">https://иркутск.точкабудущего.рф/</a><span class="src-arrow">→</span><span class="src-section">Сведения об образовательной организации</span></div>
         <div class="q-foot">✍️ В форме укажи фамилию, имя и <b>класс или должность</b> — принять участие может каждый! 🌟</div>
       </div>
       <div class="side-col">
@@ -511,10 +512,10 @@ kbd{background:#fff;border:1px solid var(--line);border-bottom-width:3px;border-
             <rect x="18" y="86" width="30" height="52" rx="8" fill="#8FDDF4"/>
             <rect x="62" y="56" width="30" height="82" rx="8" fill="#B9E45C"/>
             <rect x="106" y="26" width="30" height="112" rx="8" fill="#54C77F"/>
-            <path d="M24 74 L70 44 L114 16 L168 6" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+            <path d="M24 74 L70 44 L114 16 L168 6" stroke="#0E7FA6" stroke-width="4" stroke-linecap="round"/>
             <circle cx="168" cy="6" r="7" fill="#F6B93B"/>
           </svg>
-          <h3>📊 Итоги вторника · ⚖️ Монета</h3>
+          <h3>📊 Итоги вторника · 📮 Индексы</h3>
           <div class="stat-row"><span class="stat-label">📝 Всего ответов</span><span class="stat-value sv-total">—</span></div>
           <div class="stat-row"><span class="stat-label">✅ Верных ответов</span><span class="stat-value sv-correct">—</span></div>
           <div class="stat-row"><span class="stat-label">🔥 Самый активный класс</span><span class="stat-value small sv-top">—</span></div>
@@ -523,22 +524,25 @@ kbd{background:#fff;border:1px solid var(--line);border-bottom-width:3px;border-
       </div>
     </section>
 
-    <!-- ═══════════ СЛАЙД 4 · ЧЕТВЕРГ 🪜 ═══════════ -->
+    <!-- ═══════════ СЛАЙД 4 · ЧЕТВЕРГ 🔤 ═══════════ -->
     <section class="slide" id="slide-4" role="tabpanel">
       <div class="card q-card rise" style="--d:.05s">
         <div class="q-ghost" aria-hidden="true">04</div>
         <div class="q-chips">
           <span class="chip chip-day">📅 День 4 · Четверг</span>
-          <span class="chip chip-logic">🧩 Чистая логика</span>
+          <span class="chip chip-logic">🔍 Поиск + логика</span>
           <span class="chip chip-try">🎯 Одна попытка</span>
         </div>
-        <h2 class="q-title">🪜 Коварная лестница</h2>
+        <h2 class="q-title">🔤 Слово из фамилий</h2>
         <div class="q-text">
-          <div>🏃 С первого этажа до третьего ведёт <em class="num">36 ступенек</em>.</div>
-          <div>🏢 Все пролёты между этажами одинаковые.</div>
-          <div class="q-ask">Сколько ступенек нужно пройти с первого этажа до шестого?</div>
+          <div>Три заместителя директора курируют:</div>
+          <div>📚 учебную работу и качество образования;</div>
+          <div>🎨 учебную работу и дополнительное образование;</div>
+          <div>🌱 воспитательную работу.</div>
+          <div class="q-ask">Первые буквы их фамилий, выписанные именно в этом порядке, складываются в слово. Какое? 🧩</div>
         </div>
-        <div class="q-hint">✏️ Ответ — одно число · ⚠️ Это задача-ловушка: считай пролёты, а не этажи!</div>
+        <div class="q-hint">✏️ Ответ — одно слово · 💡 Порядок должностей важен!</div>
+        <div class="q-source"><span class="src-ico">🔎</span><a href="https://иркутск.точкабудущего.рф/" target="_blank" rel="noopener">https://иркутск.точкабудущего.рф/</a><span class="src-arrow">→</span><span class="src-section">Семья «Точки будущего»</span></div>
         <div class="q-foot">✍️ В форме укажи фамилию, имя и <b>класс или должность</b> — принять участие может каждый! 🌟</div>
       </div>
       <div class="side-col">
@@ -562,10 +566,10 @@ kbd{background:#fff;border:1px solid var(--line);border-bottom-width:3px;border-
             <rect x="18" y="86" width="30" height="52" rx="8" fill="#8FDDF4"/>
             <rect x="62" y="56" width="30" height="82" rx="8" fill="#B9E45C"/>
             <rect x="106" y="26" width="30" height="112" rx="8" fill="#54C77F"/>
-            <path d="M24 74 L70 44 L114 16 L168 6" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+            <path d="M24 74 L70 44 L114 16 L168 6" stroke="#0E7FA6" stroke-width="4" stroke-linecap="round"/>
             <circle cx="168" cy="6" r="7" fill="#F6B93B"/>
           </svg>
-          <h3>📊 Итоги среды · 🍎 Коробки</h3>
+          <h3>📊 Итоги среды · 🎂 День рождения</h3>
           <div class="stat-row"><span class="stat-label">📝 Всего ответов</span><span class="stat-value sv-total">—</span></div>
           <div class="stat-row"><span class="stat-label">✅ Верных ответов</span><span class="stat-value sv-correct">—</span></div>
           <div class="stat-row"><span class="stat-label">🔥 Самый активный класс</span><span class="stat-value small sv-top">—</span></div>
@@ -592,14 +596,13 @@ kbd{background:#fff;border:1px solid var(--line);border-bottom-width:3px;border-
       </div>
       <div class="final-left">
         <div class="card podium-card rise" style="--d:.05s">
-          <h2>🏆 Топ-3 участника недели</h2>
-          <div class="podium-sub">🧠 4 задачи · 🎯 1 попытка в день · максимум 4 верных ответа</div>
+          <h2>🏆 Топ-3 самых активных класса</h2>
+          <div class="podium-sub">📊 Считаем все ответы класса за неделю · 🎯 1 попытка в день</div>
           <div class="podium">
             <div class="pod pod-2 rise" style="--d:.2s" data-top="1">
               <span class="medal">🥈</span>
               <div class="pod-bar" data-rank="2">
                 <div class="p-name pending">—</div>
-                <div class="p-group">класс/должность</div>
                 <div class="p-score">—</div>
               </div>
             </div>
@@ -607,7 +610,6 @@ kbd{background:#fff;border:1px solid var(--line);border-bottom-width:3px;border-
               <span class="medal">🥇</span>
               <div class="pod-bar" data-rank="1">
                 <div class="p-name pending">—</div>
-                <div class="p-group">класс/должность</div>
                 <div class="p-score">—</div>
               </div>
             </div>
@@ -615,7 +617,6 @@ kbd{background:#fff;border:1px solid var(--line);border-bottom-width:3px;border-
               <span class="medal">🥉</span>
               <div class="pod-bar" data-rank="3">
                 <div class="p-name pending">—</div>
-                <div class="p-group">класс/должность</div>
                 <div class="p-score">—</div>
               </div>
             </div>
@@ -631,16 +632,12 @@ kbd{background:#fff;border:1px solid var(--line);border-bottom-width:3px;border-
             <div class="num-cell"><div class="n-val pending" id="fvCorrect">—</div><div class="n-lab">✅ верных</div></div>
           </div>
         </div>
-        <div class="card active-card rise" style="--d:.24s">
-          <span class="a-lab">🔥 Самый активный класс</span>
-          <span class="a-val pending" id="fvTopGroup">—</span>
-        </div>
         <div class="card answers-card rise" style="--d:.32s">
           <h3>🔑 Правильные ответы</h3>
-          <div class="ans-row"><span class="a-name">🐌 Пн · Улитка-альпинист</span><span class="a-key">8 дней</span></div>
-          <div class="ans-row"><span class="a-name">⚖️ Вт · Фальшивая монета</span><span class="a-key">2 взвешивания</span></div>
-          <div class="ans-row"><span class="a-name">🍎 Ср · Коробки-обманки</span><span class="a-key">1 фрукт</span></div>
-          <div class="ans-row"><span class="a-name">🪜 Чт · Коварная лестница</span><span class="a-key">90 ступенек</span></div>
+          <div class="ans-row"><span class="a-name">🕗 Пн · Чей день длиннее?</span><span class="a-key">210 минут</span></div>
+          <div class="ans-row"><span class="a-name">📮 Вт · Два индекса</span><span class="a-key">12</span></div>
+          <div class="ans-row"><span class="a-name">🎂 Ср · День рождения школы</span><span class="a-key">2557 дней</span></div>
+          <div class="ans-row"><span class="a-name">🔤 Чт · Слово из фамилий</span><span class="a-key">РОК</span></div>
         </div>
       </div>
     </section>
@@ -656,26 +653,27 @@ kbd{background:#fff;border:1px solid var(--line);border-bottom-width:3px;border-
 /* ════════════════════════════════════════════════════════════════
    📊 ДАННЫЕ НЕДЕЛИ — ОБНОВЛЯЙ КАЖДЫЙ ВЕЧЕР ТОЛЬКО ЭТОТ БЛОК!
    null → на экране заглушка «—». Заменяй null на числа/строки.
-   topGroup — только КЛАСС (например '7Б').
+   days[].topGroup — только КЛАСС (например '7Б').
+   top3 — три самых активных КЛАССА: name = класс, score = ответов.
    ════════════════════════════════════════════════════════════════ */
 const WEEK_DATA = {
   days: [
-    { total: null, correct: null, topGroup: null }, // 🐌 Понедельник (ответ: 8)
-    { total: null, correct: null, topGroup: null }, // ⚖️ Вторник    (ответ: 2)
-    { total: null, correct: null, topGroup: null }, // 🍎 Среда      (ответ: 1)
-    { total: null, correct: null, topGroup: null }  // 🪜 Четверг    (ответ: 90)
+    { total: null, correct: null, topGroup: null }, // 🕗 Понедельник (ответ: 210)
+    { total: null, correct: null, topGroup: null }, // 📮 Вторник    (ответ: 12)
+    { total: null, correct: null, topGroup: null }, // 🎂 Среда      (ответ: 2557)
+    { total: null, correct: null, topGroup: null }  // 🔤 Четверг    (ответ: РОК)
   ],
-  final: { participants: null, answers: null, correct: null, topGroup: null },
+  final: { participants: null, answers: null, correct: null },
   top3: [
-    { name: null, group: null, score: null }, // 🥇 1 место
-    { name: null, group: null, score: null }, // 🥈 2 место
-    { name: null, group: null, score: null }  // 🥉 3 место
+    { name: null, score: null }, // 🥇 1 место (класс)
+    { name: null, score: null }, // 🥈 2 место (класс)
+    { name: null, score: null }  // 🥉 3 место (класс)
   ]
 };
 /* Пример заполнения в понедельник вечером:
    WEEK_DATA.days[0] = { total: 47, correct: 21, topGroup: '7Б' };
-   В пятницу: final = { participants: 132, answers: 380, correct: 154, topGroup: '7Б' },
-   top3[0] = { name: 'Иван Петров', group: '7Б', score: 4 } и т.д. */
+   В пятницу: final = { participants: 132, answers: 380, correct: 154 },
+   top3[0] = { name: '7Б', score: 128 } и т.д. */
 
 (function(){
   'use strict';
@@ -783,13 +781,11 @@ const WEEK_DATA = {
     setValue(document.getElementById('fvParticipants'), WEEK_DATA.final.participants);
     setValue(document.getElementById('fvAnswers'), WEEK_DATA.final.answers);
     setValue(document.getElementById('fvCorrect'), WEEK_DATA.final.correct);
-    setValue(document.getElementById('fvTopGroup'), WEEK_DATA.final.topGroup);
     document.querySelectorAll('[data-top]').forEach(podBox => {
-      const personIdx = Number(podBox.dataset.top);
-      const person = WEEK_DATA.top3[personIdx] || {};
-      setValue(podBox.querySelector('.p-name'), person.name);
-      podBox.querySelector('.p-group').textContent = person.group ? person.group : 'класс/должность';
-      const scoreVal = (person.score === null || person.score === undefined) ? null : person.score + '/4';
+      const classIdx = Number(podBox.dataset.top);
+      const classRow = WEEK_DATA.top3[classIdx] || {};
+      setValue(podBox.querySelector('.p-name'), classRow.name);
+      const scoreVal = (classRow.score === null || classRow.score === undefined) ? null : classRow.score + ' ответов';
       setValue(podBox.querySelector('.p-score'), scoreVal);
     });
   }
